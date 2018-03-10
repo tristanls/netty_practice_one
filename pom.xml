@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.primeaeterna</groupId>
+    <artifactId>netty_practice_one</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>9</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>com.primeaeterna.netty_practice_one.codec</module>
+        <module>com.primeaeterna.netty_practice_one.model</module>
+        <module>com.primeaeterna.netty_practice_one.server</module>
+        <module>com.primeaeterna.netty_practice_one.client</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-buffer</artifactId>
+            <version>4.1.22.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
+            <version>4.1.22.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <version>4.1.22.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+            <version>4.1.22.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver</artifactId>
+            <version>4.1.22.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative</artifactId>
+            <version>2.0.7.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport</artifactId>
+            <version>4.1.22.Final</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.5.0.Final</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Alpha2</version>
+                <executions>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${pom.basedir}/modules</outputDirectory>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>io.netty</groupId>
+                                        <artifactId>netty-resolver</artifactId>
+                                        <version>4.1.22.Final</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>io.netty.resolver</name>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>io.netty</groupId>
+                                        <artifactId>netty-common</artifactId>
+                                        <version>4.1.22.Final</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>io.netty.common</name>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>io.netty</groupId>
+                                        <artifactId>netty-handler</artifactId>
+                                        <version>4.1.22.Final</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module io.netty.handler {
+                                            requires io.netty.common;
+                                            requires io.netty.transport;
+
+                                            exports io.netty.handler.timeout;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>io.netty</groupId>
+                                        <artifactId>netty-transport</artifactId>
+                                        <version>4.1.22.Final</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module io.netty.transport {
+                                            requires io.netty.buffer;
+                                            requires io.netty.common;
+                                            requires io.netty.resolver;
+
+                                            exports io.netty.bootstrap;
+                                            exports io.netty.channel;
+                                            exports io.netty.channel.nio;
+                                            exports io.netty.channel.socket;
+                                            exports io.netty.channel.socket.nio;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>io.netty</groupId>
+                                        <artifactId>netty-buffer</artifactId>
+                                        <version>4.1.22.Final</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>io.netty.buffer</name>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>io.netty</groupId>
+                                        <artifactId>netty-codec</artifactId>
+                                        <version>4.1.22.Final</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module io.netty.codec {
+                                            requires io.netty.buffer;
+                                            requires io.netty.common;
+                                            requires io.netty.transport;
+
+                                            exports io.netty.handler.codec;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                            </modules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Tristan Slominski</name>
+            <email>tristan.slominski@gmail.com</email>
+        </developer>
+    </developers>
+</project>
